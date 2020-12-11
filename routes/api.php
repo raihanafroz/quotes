@@ -14,6 +14,10 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
-    return $request->user();
+Route::get('/quotes', function () {
+  $quotes = \Illuminate\Support\Facades\DB::table('quotes')
+    ->join('users', 'users.id', '=', 'quotes.author_id')
+    ->select('quotes.text', 'users.name as author')->get();
+  return response(['data'=>$quotes, 'status'=>'success']);
 });
+
